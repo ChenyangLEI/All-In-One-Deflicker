@@ -10,7 +10,7 @@
 
 [[Paper]()]
 [[ArXiv]()]
-[[Demo Page]()]
+[[Demo Page](https://chenyanglei.github.io/deflicker/)]
 <!-- [[Appendix](https://xuanchiren.com/pub/DisCo_appendix.pdf)] -->
 
 <br><br>
