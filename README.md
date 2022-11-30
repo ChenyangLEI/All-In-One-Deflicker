@@ -18,6 +18,6 @@
 <p align="center">Here, we will release code and checkpoints in the near future! Stay tuned!</p>
 <br><br>
 
-
-
-<img src="demo.gif"/> 
+<div align="center">
+  <img src="demo.gif" alt="this slowpoke moves"  width="700" />
+</div>
