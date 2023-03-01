@@ -23,3 +23,6 @@
 <p align="center">:construction: :pick: :hammer_and_wrench: :construction_worker:</p>
 <p align="center">Here, we will release code and checkpoints in the near future! Stay tuned!</p>
 <br><br>
+
+# News！
+- Feb 28, 2023: Our paper is accepted by CVPR 2023, code will be released in two weeks. 
