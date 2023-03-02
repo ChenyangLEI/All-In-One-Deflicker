@@ -4,7 +4,7 @@
 
 > **Blind Video Deflickering by Neural Filtering with a Flawed Atlas** <br>
 > Chenyang Lei*, Xuanchi Ren*, Zhaoxiang Zhang and Qifeng Chen <br>
-> *preprint*<br>
+> *CVPR 2023*<br>
 > \* indicates equal contribution 
 
 [[Paper (Coming soon)]()]
