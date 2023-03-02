@@ -8,8 +8,8 @@
 > *preprint*<br>
 > \* indicates equal contribution 
 
-[[Paper]()]
-[[ArXiv]()]
+[[Paper (Coming soon)]()]
+[[ArXiv (Coming soon)]()]
 [[Demo Page](https://chenyanglei.github.io/deflicker/)]
 <!-- [[Appendix](https://xuanchiren.com/pub/DisCo_appendix.pdf)] -->
 
@@ -25,4 +25,5 @@
 <br><br>
 
 # News！
+- Mar 1, 2023: Paper will be public in one week. 
 - Feb 28, 2023: Our paper is accepted by CVPR 2023, code will be released in two weeks. 
