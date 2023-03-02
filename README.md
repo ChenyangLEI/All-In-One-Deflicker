@@ -9,7 +9,7 @@
 
 [[Paper (Coming soon)]()]
 [[ArXiv (Coming soon)]()]
-[[Demo Page](https://chenyanglei.github.io/deflicker/)]
+[[Project Website](https://chenyanglei.github.io/deflicker/)]
 <!-- [[Appendix](https://xuanchiren.com/pub/DisCo_appendix.pdf)] -->
 
 
