@@ -24,11 +24,12 @@
 <br><br>
 
 # Discussion and Related work
-If an input consistent video is available, you can try our previous work [NeurIPS 2020 Deep Video Prior](https://github.com/ChenyangLEI/deep-video-prior). Deep Video Prior can be utilized to improve the temporal consistency Image-to-Image Translation Models (e.g., ControlNet, Pix2Pix).
+If an input consistent video is available, you can try our previous work [NeurIPS 2020 Deep Video Prior](https://github.com/ChenyangLEI/deep-video-prior). Deep Video Prior can be utilized to improve the temporal consistency of Image-to-Image Translation Models (e.g., ControlNet, Pix2Pix).
 
-Solving the temporal inconsistency of video content is not in the scope of this paper or Deep Video Prior. For example, the contents obtained by video generation algorithms can be very different. Undesired shaky motion during video recording can also result in unstable videos. We leave the study for these types of video inconsistency to future work.
+While our method can remove the flickering artifacts caused by X-to-video generation algorithms or video processing algorithms. Solving the temporal inconsistency of video **content (e.g., two frames contain different types of cats / cars / faces)** is not in the scope of this paper or Deep Video Prior. For example, the contents obtained by video generation algorithms can be very different. Undesired shaky motion during video recording can also result in unstable videos. We leave the study for these types of video inconsistency to future work.
 
 
 # News！
 - Mar 1, 2023: Paper will be public in one week. 
 - Feb 28, 2023: Our paper is accepted by CVPR 2023, code will be released in two weeks. 
+- First Commit: Code and dataset will be released after the paper is accepted.
