@@ -37,7 +37,7 @@ mv cvpr2023_deflicker_public_folder/pretrained_weights ./ && rm -r cvpr2023_defl
 ```
 
 ## Inference
-Put your video or image foler under ``data/test``. For example:
+Put your video or image folder under ``data/test``. For example:
 ```
 export PYTHONPATH=$PWD
 python test.py --video_name data/test/Winter_Scenes_in_Holland.mp4 # for video input
