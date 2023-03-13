@@ -50,6 +50,8 @@ Find the results under ``results/$YOUR_DATA_NAME/final/output.mp4``.
 ## All evaluated types of flickering videos:
 
 - Synthesized videos from text-to-video algorithms
+  -  [Magic Video](https://magicvideo.github.io/)
+  -  [Make-A-Video](https://makeavideo.studio/)
 
 - Old movies
 
