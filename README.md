@@ -7,7 +7,7 @@
 > \* indicates equal contribution 
 
 [[Paper](https://chenyanglei.github.io/deflicker/CVPR2023_deflicker_lowres.pdf)]
-[[ArXiv (Coming soon)]()]
+[[ArXiv](https://arxiv.org/pdf/2303.08120.pdf)]
 [[Project Website](https://chenyanglei.github.io/deflicker/)]
 <!-- [[Appendix]()] -->
 
