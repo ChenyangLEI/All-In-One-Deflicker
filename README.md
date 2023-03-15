@@ -25,11 +25,14 @@
 
 ## Environment & Dependency
 
+We provide an environment with python ``3.10`` & torch ``1.12`` with CUDA 11. If you want a torch ``1.6`` with CUDA 10, please check this [env file](https://github.com/ChenyangLEI/All-In-One-Deflicker/blob/53bf1d65e71bde2866d287e2b5e59ac0431c5a15/environment.yml#L1). 
+
 Install environment:
 ```
 conda env create -f environment.yml 
 conda activate deflicker
 ```
+
 
 Download pretrained ckpt:
 ```
