@@ -3,8 +3,8 @@ import numpy as np
 from glob import glob
 import imageio 
 import subprocess
-import src.models.network_filter as net
-from src.models.utils import tensor2img, load_image
+import models.network_filter as net
+from models.utils import tensor2img, load_image
 import argparse
 import random
 import torch
@@ -12,8 +12,8 @@ from tqdm import tqdm
 import cv2
 
 ### custom lib
-from src.models.network_local import TransformNet
-import src.models.utils as utils
+from models.network_local import TransformNet
+import models.utils as utils
 from easydict import EasyDict as edict
 
 parser = argparse.ArgumentParser()
