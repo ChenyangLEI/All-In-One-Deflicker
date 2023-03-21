@@ -103,11 +103,12 @@ for frame_id in tqdm(range(num_frames)):
             frame_o2 = frame_p2 + output
             frame_p1 = frame_p2
             frame_o1 = frame_o2
-
+    
+    frame_content = padder.unpad(frame_content)
+    frame_style = padder.unpad(frame_style)
+    frame_pred = padder.unpad(frame_pred)
+    
     frame_content, frame_style, frame_pred = tensor2img(frame_content), tensor2img(frame_style), tensor2img(frame_pred)
-    frame_content = cv2.resize(frame_content, org_size, cv2.INTER_LINEAR)
-    frame_style = cv2.resize(frame_style, org_size, cv2.INTER_LINEAR)
-    frame_pred = cv2.resize(frame_pred, org_size, cv2.INTER_LINEAR)
     frame_concat = np.concatenate([frame_content, frame_style, frame_pred], axis=1)
     utils.save_img(frame_concat, "{}/{:05d}.png".format(output_folder, frame_id))
     utils.save_img(frame_pred, "{}/{:05d}.png".format(process_filter_dir, frame_id))

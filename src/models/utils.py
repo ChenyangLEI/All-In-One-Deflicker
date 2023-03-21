@@ -1,5 +1,6 @@
 ### python lib
 import os, sys, random, math, cv2, pickle, subprocess
+import torch.nn.functional as F
 import numpy as np
 from PIL import Image
 
@@ -596,7 +597,7 @@ def make_video(input_dir, img_fmt, video_filename, fps=24):
     run_cmd(cmd)
 
 # helper function
-def load_image(path, size=None, device=None):
+def load_image(path, size=None, device=None, resize=True):
     img = Image.open(path)
     img = np.array(img) / 255.
 
@@ -609,13 +610,36 @@ def load_image(path, size=None, device=None):
 
     if size is not None:
         img = cv2.resize(img, size, cv2.INTER_LINEAR)
-
+    
     orig_h, orig_w = img.shape[:2]
-    h = orig_h//32*32
-    w = orig_w//32*32
-    # img = img[:h,:w]
-    img = cv2.resize(img, (w, h), cv2.INTER_LINEAR) 
+    
+    if resize:
+        h = orig_h//32*32
+        w = orig_w//32*32
+        # img = img[:h,:w]
+        img = cv2.resize(img, (w, h), cv2.INTER_LINEAR) 
     img = torch.from_numpy(img).permute(2,0,1).unsqueeze(0).to(device, dtype=torch.float)
 
     org_size = (orig_w, orig_h) 
     return img, org_size
+
+class InputPadder:
+    """ Pads images such that dimensions are divisible by 8 """
+    def __init__(self, dims, mode='other'):
+        self.ht, self.wd = dims[-2:]
+        pad_ht = (((self.ht // 8) + 1) * 8 - self.ht) % 8
+        pad_wd = (((self.wd // 8) + 1) * 8 - self.wd) % 8
+        if mode == 'sintel':
+            self._pad = [pad_wd//2, pad_wd - pad_wd//2, pad_ht//2, pad_ht - pad_ht//2]
+        elif mode == 'kitti400':
+            self._pad = [0, 0, 0, 400 - self.ht]
+        else:
+            self._pad = [pad_wd//2, pad_wd - pad_wd//2, 0, pad_ht]
+
+    def pad(self, *inputs):
+        return [F.pad(x, self._pad, mode='replicate') for x in inputs]
+
+    def unpad(self,x):
+        ht, wd = x.shape[-2:]
+        c = [self._pad[2], ht-self._pad[3], self._pad[0], wd-self._pad[1]]
+        return x[..., c[0]:c[1], c[2]:c[3]]
