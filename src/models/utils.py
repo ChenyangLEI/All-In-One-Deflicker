@@ -624,11 +624,11 @@ def load_image(path, size=None, device=None, resize=True):
     return img, org_size
 
 class InputPadder:
-    """ Pads images such that dimensions are divisible by 8 """
+    """ Pads images such that dimensions are divisible by 32 """
     def __init__(self, dims, mode='other'):
         self.ht, self.wd = dims[-2:]
-        pad_ht = (((self.ht // 8) + 1) * 8 - self.ht) % 8
-        pad_wd = (((self.wd // 8) + 1) * 8 - self.wd) % 8
+        pad_ht = (((self.ht // 32) + 1) * 32 - self.ht) % 32
+        pad_wd = (((self.wd // 32) + 1) * 32 - self.wd) % 32
         if mode == 'sintel':
             self._pad = [pad_wd//2, pad_wd - pad_wd//2, pad_ht//2, pad_ht - pad_ht//2]
         elif mode == 'kitti400':
