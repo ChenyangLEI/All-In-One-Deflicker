@@ -4,7 +4,7 @@ from glob import glob
 import imageio 
 import subprocess
 import src.models.network_filter as net
-from src.models.utils import tensor2img, load_image
+from src.models.utils import tensor2img, load_image, InputPadder
 import argparse
 import random
 import torch
@@ -50,8 +50,8 @@ filter_net.load_state_dict(ckpt)
 filter_net.to(device)
 filter_net.eval()
 
-### Define local refinement model
-### Local refinement net is rely on Lai et al., ECCV 2018, thank you!
+# ## Define local refinement model
+# ## Local refinement net is rely on Lai et al., ECCV 2018, thank you!
 
 ### initialize model
 model_opts = edict({'nf':32, 'norm':'IN', 'model':'TransformNet', 'blocks': 5})
@@ -87,8 +87,11 @@ print("output dir:", output_folder) # concat output
 
 for frame_id in tqdm(range(num_frames)):
     ### neural filter net
-    frame_content, org_size = load_image(content_names[frame_id], device=device)
-    frame_style, _ = load_image(style_names[frame_id], size=org_size, device=device)
+    frame_content, org_size = load_image(content_names[frame_id], device=device, resize=False)
+    frame_style, _ = load_image(style_names[frame_id], size=org_size, device=device, resize=False)
+    padder = InputPadder(frame_content.shape)
+    frame_content, frame_style = padder.pad(frame_content, frame_style)
+    
     with torch.no_grad():
         frame_pred = filter_net(torch.cat([frame_content, frame_style], dim=1))
         ### local_net 
@@ -103,12 +106,11 @@ for frame_id in tqdm(range(num_frames)):
             frame_o2 = frame_p2 + output
             frame_p1 = frame_p2
             frame_o1 = frame_o2
-    
-    frame_content = padder.unpad(frame_content)
-    frame_style = padder.unpad(frame_style)
-    frame_pred = padder.unpad(frame_pred)
-    
+
     frame_content, frame_style, frame_pred = tensor2img(frame_content), tensor2img(frame_style), tensor2img(frame_pred)
+    frame_content = cv2.resize(frame_content, org_size, cv2.INTER_LINEAR)
+    frame_style = cv2.resize(frame_style, org_size, cv2.INTER_LINEAR)
+    frame_pred = cv2.resize(frame_pred, org_size, cv2.INTER_LINEAR)
     frame_concat = np.concatenate([frame_content, frame_style, frame_pred], axis=1)
     utils.save_img(frame_concat, "{}/{:05d}.png".format(output_folder, frame_id))
     utils.save_img(frame_pred, "{}/{:05d}.png".format(process_filter_dir, frame_id))
