@@ -125,12 +125,10 @@ If you find our work useful in your research, please consider citing:
 or 
 
 ```
-@misc{lei2023blind,
-      title={Blind Video Deflickering by Neural Filtering with a Flawed Atlas}, 
-      author={Chenyang Lei and Xuanchi Ren and Zhaoxiang Zhang and Qifeng Chen},
-      year={2023},
-      eprint={2303.08120},
-      archivePrefix={arXiv},
-      primaryClass={cs.CV}
+@article{lei2023blind,
+  title={Blind Video Deflickering by Neural Filtering with a Flawed Atlas},
+  author={Lei, Chenyang and Ren, Xuanchi and Zhang, Zhaoxiang and Chen, Qifeng},
+  journal={arXiv preprint arXiv:2303.08120},
+  year={2023}
 }
 ```
