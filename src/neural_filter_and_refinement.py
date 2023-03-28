@@ -19,6 +19,7 @@ from easydict import EasyDict as edict
 parser = argparse.ArgumentParser()
 parser.add_argument("--ckpt_filter", default="./pretrained_weights/neural_filter.pth",type=str, help="the ckpt of neural filter network")
 parser.add_argument("--ckpt_local", default="./pretrained_weights/local_refinement_net.pth", type=str, help="the ckpt of local refinement network")
+parser.add_argument("--fps", default=10, type=int, help="frame per second")
 parser.add_argument("--video_name", default=None, type=str, help="the name of input video")
 parser.add_argument('--gpu',             type=int,     default=0,                help='gpu device id')
 
@@ -121,9 +122,9 @@ for frame_id in tqdm(range(num_frames)):
 
 
 # save video
-cmd =  "ffmpeg -y -r 10 -i %s -crf 25 -r 12 -qscale 4  %s" % (os.path.join(output_folder, "%05d.png"), output_folder + ".mp4")
+cmd =  "ffmpeg -y -r %s -i %s -crf 25 -r 12 -qscale 4  %s" % (str(opts.fps), os.path.join(output_folder, "%05d.png"), output_folder + ".mp4")
 os.system(cmd) 
-cmd =  "ffmpeg -y -r 10 -i %s -crf 25 -r 12 -qscale 4  %s" % (os.path.join(process_filter_dir, "%05d.png"), process_filter_dir + ".mp4")
+cmd =  "ffmpeg -y -r %s -i %s -crf 25 -r 12 -qscale 4  %s" % (str(opts.fps), os.path.join(process_filter_dir, "%05d.png"), process_filter_dir + ".mp4")
 os.system(cmd) 
-cmd =  "ffmpeg -y -r 10 -i %s -crf 25 -r 12 -qscale 4  %s" % (os.path.join(output_final_dir, "%05d.png"), output_final_dir + ".mp4")
+cmd =  "ffmpeg -y -r %s -i %s -crf 25 -r 12 -qscale 4  %s" % (str(opts.fps), os.path.join(output_final_dir, "%05d.png"), output_final_dir + ".mp4")
 os.system(cmd) 

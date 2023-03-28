@@ -35,5 +35,5 @@ else:
 atlas_generation_cmd = "python src/stage1_neural_atlas.py --vid_name {}".format(video_base_name)
 os.system(atlas_generation_cmd)
 
-neural_filter_and_refinement_cmd = "python src/neural_filter_and_refinement.py --video_name {}".format(video_base_name)
+neural_filter_and_refinement_cmd = "python src/neural_filter_and_refinement.py --video_name {} --fps {}".format(video_base_name, opts.fps)
 os.system(neural_filter_and_refinement_cmd)
