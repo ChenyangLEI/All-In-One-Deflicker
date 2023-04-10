@@ -28,8 +28,10 @@
 1. [Environment & Dependency](#environment--dependency)
 2. [Inference](#inference)
 3. [All Evaluated Types of Flickering Videos](#all-evaluated-types-of-flickering-videos)
-4. [Suggestions for Choosing the Hyperparameters](#suggestions-for-choosing-the-hyperparameters)
-5. [Discussion and Related work](#discussion-and-related-work)
+4. [Advanced Features](#advanced-features)
+   - [Using segmentation masks](#using-segmentation-masks)
+5. [Suggestions for Choosing the Hyperparameters](#suggestions-for-choosing-the-hyperparameters)
+6. [Discussion and Related work](#discussion-and-related-work)
 
 ## Environment & Dependency
 
@@ -80,18 +82,39 @@ Find the results under ``results/$YOUR_DATA_NAME/final/output.mp4``.
   -  [Image-to-Image Translation](https://github.com/junyanz/pytorch-CycleGAN-and-pix2pix)
   -  [Colorization](https://github.com/junyanz/pytorch-CycleGAN-and-pix2pix)
 
+## Advanced Features
+### Using segmentation masks:
+
+Currently, we support to process video with [Carvekit](https://github.com/OPHoperHPO/image-background-remove-tool) or [Mask-RCNN](https://detectron2.readthedocs.io/en/latest/tutorials/install.html). With this support, the atlas may be improved, especially for the video with a salient object or human.
+
+- To use [Carvekit](https://github.com/OPHoperHPO/image-background-remove-tool), which is for background removal:
+```
+git clone https://github.com/OPHoperHPO/image-background-remove-tool.git
+python test.py --video_name data/test/Winter_Scenes_in_Holland.mp4 --class_name portrait # portrait triggers Carvekit
+```
+- To use [Mask-RCNN](https://detectron2.readthedocs.io/en/latest/tutorials/install.html): 
+```
+python -m pip install 'git+https://github.com/facebookresearch/detectron2.git'
+python test.py --video_name data/test/Winter_Scenes_in_Holland.mp4 --class_name anything # actually not work for this video 
+```
+where --class_name determines the COCO class name of the sought foreground object. It is also possible to choose the first instance retrieved by Mask-RCNN by using ``--class_name anything``. 
+
+In both two settings, we suggest you to check the generated masks under ``data/test/{vid_name}_seg``. If the images are all black, you can only use the non-segmentation implementation above. 
+
 ## Suggestions for Choosing the Hyperparameters
-If you want to find the best setting for getting an atlas for deflickering, we provide a reference guide here:
+If you want to find the best setting to get an atlas for deflickering, we provide a reference guide here:
 
-1. (**Important**) [Iteration number](https://github.com/ChenyangLEI/All-In-One-Deflicker/blob/53bf1d65e71bde2866d287e2b5e59ac0431c5a15/src/config/config_flow_100.json#L6): Please change this according to the total frame number of your video and the [downsample rate](https://github.com/ChenyangLEI/All-In-One-Deflicker/blob/53bf1d65e71bde2866d287e2b5e59ac0431c5a15/src/stage1_neural_atlas.py#L265) of the image size. For example, we adopt ``10000`` iteration number for the example video with ``80`` frames and downsample rate ``4``. If you find the results are not as expected, you can try to increase the ``iters_num`` (for example: ``100000``).
+1. (**Important**) [Iteration number](https://github.com/ChenyangLEI/All-In-One-Deflicker/blob/53bf1d65e71bde2866d287e2b5e59ac0431c5a15/src/config/config_flow_100.json#L6): Please change this according to the total frame number of your video and the [downsample rate](https://github.com/ChenyangLEI/All-In-One-Deflicker/blob/53bf1d65e71bde2866d287e2b5e59ac0431c5a15/src/stage1_neural_atlas.py#L265) of the image size. For example, we adopt ``10000`` iteration number for the example video with ``80`` frames and a downsample rate of ``4``. If you find the results are not as expected, you can try to increase the ``iters_num`` (for example: ``100000``). If you want to use the implementation with segmentation masks, it is suggested to increase the ``iters_num``.
 
-2. (**Important**) [Optical flow loss weight](https://github.com/ChenyangLEI/All-In-One-Deflicker/blob/53bf1d65e71bde2866d287e2b5e59ac0431c5a15/src/config/config_flow_100.json#L8): Please change ``optical_flow_coeff`` according the intensity of flicker in your video. For example, we adopt ``500.0`` for the sample video. If the video has minor flickering, you can use ``5.0`` as the ``optical_flow_coeff``.
+2. (**Important**) [Optical flow loss weight](https://github.com/ChenyangLEI/All-In-One-Deflicker/blob/53bf1d65e71bde2866d287e2b5e59ac0431c5a15/src/config/config_flow_100.json#L8): Please change ``optical_flow_coeff`` and ``alpha_flow_factor`` (**Note**: ``alpha_flow_factor`` only used in the advanced features with segmentation masks) according the intensity of flicker in your video. For example, we adopt ``500.0``  for the ``optical_flow_coeff`` and ``4900.0`` for the ``alpha_flow_factor`` for the sample video. If the video has minor flickering, you can use ``5.0`` for the ``optical_flow_coeff`` and ``49.0`` for the ``alpha_flow_factor``. 
 
-3. [Downsample rate](https://github.com/ChenyangLEI/All-In-One-Deflicker/blob/53bf1d65e71bde2866d287e2b5e59ac0431c5a15/src/stage1_neural_atlas.py#L265): We find that downsampling the resolution of the neural atlas by ``4`` times make the convergence much faster and slightly influences the quality. You can define your own downsample rate.
+3. [Downsample rate](https://github.com/ChenyangLEI/All-In-One-Deflicker/blob/53bf1d65e71bde2866d287e2b5e59ac0431c5a15/src/stage1_neural_atlas.py#L265): We find that downsampling the resolution of the neural atlas by ``4`` times make the convergence much faster and slightly influences the quality. You can choose your own downsample rate.
 
-4. [Maximum number of frames](https://github.com/ChenyangLEI/All-In-One-Deflicker/blob/53bf1d65e71bde2866d287e2b5e59ac0431c5a15/src/config/config_flow_100.json#L3): We set the ``maximum_number_of_frames`` to 200. The performance for longer videos is not evaluated. It would be better to split the long video into several shorter sequences. 
+4. [Maximum number of frames](https://github.com/ChenyangLEI/All-In-One-Deflicker/blob/53bf1d65e71bde2866d287e2b5e59ac0431c5a15/src/config/config_flow_100.json#L3): We set the ``maximum_number_of_frames`` to 200. The performance for longer videos is not evaluated. It is recommended to split long videos into several shorter sequences. 
 
-5. Useness of segmentation masks: Perfect segmentation masks will increase the quality of the neural atlas, especially for objects with significant motion. However, in most cases,  the improvement brought by segmentation on the final prediction is not obvious since neural filtering can filter the flaws in the atlas. If you want to use segmentation for better results, refer to [layered-neural-atlases](https://github.com/ykasten/layered-neural-atlases) and use our ``src/neural_filter_and_refinement.py`` based on it. Note that layered-neural-atlases use Mask-RCNN, you can also try [lang-seg](https://github.com/isl-org/lang-seg) or [ODISE](https://jerryxu.net/ODISE/).
+5. Useness of segmentation masks: Perfect segmentation masks will increase the quality of the neural atlas, especially for objects with significant motion. However, in most cases, the improvement brought by segmentation on the final prediction is not significant since neural filtering can filter the flaws in the atlas. For now, we provide a naive version for segmentation masks support above.
+
+<!-- If you want to use segmentation for better results, refer to [layered-neural-atlases](https://github.com/ykasten/layered-neural-atlases) and use our ``src/neural_filter_and_refinement.py`` based on it. Note that layered-neural-atlases use Mask-RCNN, you can also try [lang-seg](https://github.com/isl-org/lang-seg) or [ODISE](https://jerryxu.net/ODISE/). -->
 
 <!-- 
 ```
