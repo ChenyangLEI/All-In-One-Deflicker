@@ -14,13 +14,12 @@ import matplotlib.image as mpimg
 import torch
 
 def preprocess(args):
-    images = sorted(args.vid_path.glob('*.png'))
+    images = sorted(args.vid_path.glob('*.*g'))
     vid_name = args.vid_path.name
     vid_root = args.vid_path.parent
     out_mask_dir = vid_root / f'{vid_name}_seg'
     out_mask_dir.mkdir(exist_ok=True)
-
-
+    
     # Check doc strings for more information
     interface = HiInterface(object_type="object",  # Can be "object" or "hairs-like".
                             batch_size_seg=5,
@@ -31,14 +30,14 @@ def preprocess(args):
                             trimap_prob_threshold=231,
                             trimap_dilation=30,
                             trimap_erosion_iters=5,
-                            fp16=False)    
-    
+                            fp16=False)     
     number_of_frames = len(images)
 
     for i in range(number_of_frames):
         images_without_background = interface([images[i]])
         cat_wo_bg = images_without_background[0]
         mask = np.array(cat_wo_bg)[:, :, 3]
+
         cv2.imwrite(f"{out_mask_dir}/%05d.png"%(i),  mask)
 
 if __name__ == '__main__':

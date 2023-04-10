@@ -16,7 +16,7 @@ import matplotlib.image as mpimg
 
 
 def preprocess(args):
-    images = sorted(args.vid_path.glob('*.png'))
+    images = sorted(args.vid_path.glob('*.*g'))
     vid_name = args.vid_path.name
     vid_root = args.vid_path.parent
     out_mask_dir = vid_root / f'{vid_name}_seg'
