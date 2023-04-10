@@ -85,7 +85,7 @@ Find the results under ``results/$YOUR_DATA_NAME/final/output.mp4``.
 ## Advanced Features
 ### Using segmentation masks:
 
-Currently, we support to process video with [Carvekit](https://github.com/OPHoperHPO/image-background-remove-tool) or [Mask-RCNN](https://detectron2.readthedocs.io/en/latest/tutorials/install.html). With this support, the atlas may be improved, especially for the video with a salient object or human.
+Currently, we support to process video with [Carvekit](https://github.com/OPHoperHPO/image-background-remove-tool) or [Mask-RCNN](https://detectron2.readthedocs.io/en/latest/tutorials/install.html). This support can help improve the atlas, particularly for videos featuring a salient object or human. Please note that the current implementation supports only one foreground object with a background.
 
 - To use [Carvekit](https://github.com/OPHoperHPO/image-background-remove-tool), which is for background removal:
 ```
