@@ -18,7 +18,7 @@
 </div>
 
 ## News！
-- Mar 14, 2023: We are working on supporting segmentation masks. Stay tuned!
+- Apr 10, 2023: Our code can work with segmentations masks for a foreground object.
 - Mar 12, 2023: Inference code and paper are released! Collected dataset will release soon.
 - Mar 1, 2023: Paper will be public in one week. 
 - Feb 28, 2023: Our paper is accepted by CVPR 2023, code will be released in two weeks. 
