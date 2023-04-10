@@ -25,13 +25,13 @@
 
 ## Contents
 
-1. [Environment](#environment)
+1. [Environment & Dependency](#environment--dependency)
 2. [Inference](#inference)
 3. [All Evaluated Types of Flickering Videos](#all-evaluated-types-of-flickering-videos)
 4. [Suggestions for Choosing the Hyperparameters](#suggestions-for-choosing-the-hyperparameters)
 5. [Discussion and Related work](#discussion-and-related-work)
 
-## Environment
+## Environment & Dependency
 
 We provide an environment with python ``3.10`` & torch ``1.12`` with CUDA 11. If you want a torch ``1.6`` with CUDA 10, please check this [env file](https://github.com/ChenyangLEI/All-In-One-Deflicker/blob/53bf1d65e71bde2866d287e2b5e59ac0431c5a15/environment.yml#L1). 
 
