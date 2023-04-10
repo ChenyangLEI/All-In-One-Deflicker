@@ -58,7 +58,7 @@ python test.py --video_frame_folder data/test/Winter_Scenes_in_Holland # for ima
 ```
 Find the results under ``results/$YOUR_DATA_NAME/final/output.mp4``. 
 
-**Note**: our inference code only takes about ``3000M`` GPU memory.
+**Note**: our inference code only takes about ``3000M`` GPU memory. For the ``video_frame_folder``, the default format is ``png``.
 
 ## All Evaluated Types of Flickering Videos:
 
