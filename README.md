@@ -89,11 +89,13 @@ Currently, we support to process video with [Carvekit](https://github.com/OPHope
 - To use [Carvekit](https://github.com/OPHoperHPO/image-background-remove-tool), which is for background removal:
 ```
 git clone https://github.com/OPHoperHPO/image-background-remove-tool.git
+export PYTHONPATH=$PWD
 python test.py --video_name data/test/Winter_Scenes_in_Holland.mp4 --class_name portrait # portrait triggers Carvekit
 ```
 - To use [Mask-RCNN](https://detectron2.readthedocs.io/en/latest/tutorials/install.html): 
 ```
 python -m pip install 'git+https://github.com/facebookresearch/detectron2.git'
+export PYTHONPATH=$PWD
 python test.py --video_name data/test/Winter_Scenes_in_Holland.mp4 --class_name anything # actually not work for this video 
 ```
 where --class_name determines the COCO class name of the sought foreground object. It is also possible to choose the first instance retrieved by Mask-RCNN by using ``--class_name anything``. 
