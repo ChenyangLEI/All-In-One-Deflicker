@@ -23,7 +23,15 @@
 - Mar 1, 2023: Paper will be public in one week. 
 - Feb 28, 2023: Our paper is accepted by CVPR 2023, code will be released in two weeks. 
 
-## Environment & Dependency
+## Contents
+
+1. [Environment](#environment)
+2. [Inference](#inference)
+3. [All Evaluated Types of Flickering Videos](#all-evaluated-types-of-flickering-videos)
+4. [Suggestions for Choosing the Hyperparameters](#suggestions-for-choosing-the-hyperparameters)
+5. [Discussion and Related work](#discussion-and-related-work)
+
+## Environment
 
 We provide an environment with python ``3.10`` & torch ``1.12`` with CUDA 11. If you want a torch ``1.6`` with CUDA 10, please check this [env file](https://github.com/ChenyangLEI/All-In-One-Deflicker/blob/53bf1d65e71bde2866d287e2b5e59ac0431c5a15/environment.yml#L1). 
 
@@ -51,7 +59,7 @@ Find the results under ``results/$YOUR_DATA_NAME/final/output.mp4``.
 
 **Note**: our inference code only takes about ``3000M`` GPU memory.
 
-## All evaluated types of flickering videos:
+## All Evaluated Types of Flickering Videos:
 
 - Synthesized videos from text-to-video algorithms
   -  [Magic Video](https://magicvideo.github.io/)
