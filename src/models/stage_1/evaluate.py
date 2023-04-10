@@ -207,6 +207,7 @@ def evaluate_model(model_F_atlas, resx, resy, number_of_frames, model_F_mapping1
                    save_checkpoint=True, show_atlas_alpha=False):  #
 
     os.makedirs(os.path.join(results_folder, '%06d' % iteration), exist_ok = True)
+    os.makedirs(os.path.join(results_folder, "output"), exist_ok = True)
     evaluation_folder = os.path.join(results_folder, '%06d' % iteration)
     resx = np.int64(resx)
     resy = np.int64(resy)
@@ -264,18 +265,10 @@ def evaluate_model(model_F_atlas, resx, resy, number_of_frames, model_F_mapping1
         500,
         minx2, minx2 + edge_size2, miny2, miny2 + edge_size2, model_F_atlas,device
     )
-    checkerboard_ = np.array(Image.open(str("checkerboard.png"))).astype(np.float64) / 255.
-    checkerboard_ = cv2.resize(checkerboard_, (500, 500))
-    checkerboard_ = torch.from_numpy(checkerboard_[:, :, :3])
-
-    checkerboard = (checkerboard_ * 0.3 + texture_orig1t * 0.7)
-    checkerboard2 = (checkerboard_ * 0.3 + texture_orig2t * 0.7)
 
     alpha_reconstruction = np.zeros((resy, resx, number_of_frames))
     video_frames_reconstruction_edit1 = np.zeros((resy, resx, 3, number_of_frames))
-    video_frames_reconstruction_edit1_checkerboard = np.ones((resy, resx, 3, number_of_frames)) * 0.5
     video_frames_reconstruction_edit2 = np.zeros((resy, resx, 3, number_of_frames))
-    video_frames_reconstruction_edit2_checkerboard = np.ones((resy, resx, 3, number_of_frames)) * 0.5
     video_frames_reconstruction_edit = np.zeros((resy, resx, 3, number_of_frames))
 
     video_frames_reconstruction = np.zeros((resy, resx, 3, number_of_frames))
@@ -411,20 +404,6 @@ def evaluate_model(model_F_atlas, resx, resy, number_of_frames, model_F_mapping1
                                                                   uv_temp2[:, 0] * 0.5 - 0.5,
                                                                   uv_temp2[:, 1] * 0.5 - 0.5,
                                                                   edited_tex2)
-                # pixels reconstruction from the checkerboard texture:
-                rgb21_tex, pointsx1_tex, pointsy1_tex, relevant1_tex = get_colors(500,
-                                                                                  minxt, minxt + edge_sizet, minyt,
-                                                                                  minyt + edge_sizet,
-                                                                                  uv_temp1[:, 0] * 0.5 + 0.5,
-                                                                                  uv_temp1[:, 1] * 0.5 + 0.5,
-                                                                                  checkerboard)
-
-                rgb22_tex, pointsx2_tex, pointsy2_tex, relevant2_tex = get_colors(500,
-                                                                                  minx2, minx2 + edge_size2, miny2,
-                                                                                  miny2 + edge_size2,
-                                                                                  uv_temp2[:, 0] * 0.5 - 0.5,
-                                                                                  uv_temp2[:, 1] * 0.5 - 0.5,
-                                                                                  checkerboard2)
 
                 m1_alpha_v.append(pointsy1)
                 m1_alpha_u.append(pointsx1)
@@ -487,13 +466,7 @@ def evaluate_model(model_F_atlas, resx, resy, number_of_frames, model_F_mapping1
                             (video_frames[relisa[i], reljsa[i], :, f] - rgb_current.cpu()).norm(dim=1) ** 2).numpy()
                 rgb_residual_video[relisa[i], reljsa[i], :, f] = (
                 (video_frames[relisa[i], reljsa[i], :, f] - rgb_current.cpu())).numpy()
-                video_frames_reconstruction_edit1_checkerboard[relisa[i][relevant1_tex], reljsa[i][relevant1_tex], :,
-                f] = video_frames_reconstruction_edit1_checkerboard[relisa[i][relevant1_tex], reljsa[i][relevant1_tex],
-                     :,
-                     f] * (1 - alpha).cpu().numpy()[relevant1_tex] + rgb21_tex * alpha.cpu().numpy()[relevant1_tex]
-
-                video_frames_reconstruction_edit2_checkerboard[relisa[i][relevant2_tex], reljsa[i][relevant2_tex], :,
-                f] = rgb22_tex
+                
             if show_atlas_alpha:# this part is slow, not running during training
                 cur_mask1 = interpolate_alpha(m1_alpha_v, m1_alpha_u, m1_alpha_alpha)
                 cur_mask2 = interpolate_alpha(m2_alpha_v, m2_alpha_u, m2_alpha_alpha)
@@ -562,12 +535,6 @@ def evaluate_model(model_F_atlas, resx, resy, number_of_frames, model_F_mapping1
     writer_uv_2 = imageio.get_writer(
         "%s/uv_2_%s.mp4" % (evaluation_folder, vid_name),
         fps=10)
-    writer_checkerboard_1 = imageio.get_writer(
-        "%s/checkerboard_1_%s.mp4" % (evaluation_folder, vid_name),
-        fps=10)
-    writer_checkerboard_2 = imageio.get_writer(
-        "%s/checkerboard_2_%s.mp4" % (evaluation_folder, vid_name),
-        fps=10)
 
     writer_global_info = imageio.get_writer(
         "%s/global_info_%s.mp4" % (evaluation_folder, vid_name), fps=10)
@@ -576,41 +543,16 @@ def evaluate_model(model_F_atlas, resx, resy, number_of_frames, model_F_mapping1
     # save evaluation videos:
     for i in range(number_of_frames):
         print(i)
-
-        cur = (video_frames_reconstruction_edit1[:, :, :, i])
-        cc = np.concatenate(
-            (cur, cv2.resize(masks1[:, :, np.newaxis] * edited_tex1.numpy(), (cur.shape[0], cur.shape[0]))),
-            axis=1)
-        writer_t_edited1.append_data((cc * (255)).astype(np.uint8))
-
-        cur = (video_frames_reconstruction_edit1_checkerboard[:, :, :, i])
-        cc = np.concatenate(
-            (cur, cv2.resize(checkerboard.numpy(), (cur.shape[0], cur.shape[0]))),
-            axis=1)
-        writer_t_edited1_tex.append_data((cc * (255)).astype(np.uint8))
-        writer_checkerboard_1.append_data((cur * 255).astype(np.uint8))
-
-        cur = (video_frames_reconstruction_edit2_checkerboard[:, :, :, i])
-        cc = np.concatenate(
-            (cur, cv2.resize(checkerboard2.numpy(), (cur.shape[0], cur.shape[0]))),
-            axis=1)
-        writer_t_edited2_tex.append_data((cc * (255)).astype(np.uint8))
-        writer_checkerboard_2.append_data((cur * 255).astype(np.uint8))
+        # save image
+        svae_image_path = os.path.join(results_folder, 'output', '%05d.png' % i)
+        imageio.imwrite(svae_image_path, (video_frames_reconstruction[:, :, :, i] * (255)).astype(np.uint8))
 
         writer_alpha.append_data((alpha_reconstruction[:, :, i] * (255)).astype(np.uint8))
-
-        cur = (video_frames_reconstruction_edit2[:, :, :, i])
-        cc = np.concatenate(
-            (cur, cv2.resize(masks2[:, :, np.newaxis] * edited_tex2.numpy(), (cur.shape[0], cur.shape[0]))),
-            axis=1)
-        writer_t_edited2.append_data((cc * (255)).astype(np.uint8))
-
         alpha_vs_mask_rcnn_cur = np.transpose(np.stack(
             (mask_frames[:, :, i].numpy(), alpha_reconstruction[:, :, i], np.zeros_like(mask_frames[:, :, i].numpy()))),
                                               (1, 2, 0))
 
         writer_alpha_vs_mask_rcnn.append_data((alpha_vs_mask_rcnn_cur * 255.0).astype(np.uint8))
-        writer_edit.append_data((video_frames_reconstruction_edit[:, :, :, i] * (255)).astype(np.uint8))
         writer_im_rec.append_data((video_frames_reconstruction[:, :, :, i] * (255)).astype(np.uint8))
         writer_residuals.append_data(((rgb_residual_video[:, :, :, i] + 0.5) * 255).astype(np.uint8))
 
@@ -625,60 +567,6 @@ def evaluate_model(model_F_atlas, resx, resy, number_of_frames, model_F_mapping1
             video_frames_reconstruction[:, :, :, i],
             data_range=1)
 
-        fig = plt.figure(figsize=(20, 10))
-        plt.subplot(3, 4, 3)
-        plt.imshow(rgb_error_video[:, :, i], vmin=0.0, vmax=0.2)
-        plt.colorbar()
-        plt.title("RGB error")
-
-        plt.subplot(3, 4, 12)
-        plt.imshow(rigidity_loss1_video[:, :, i], vmin=2.8, vmax=50.0)
-        plt.colorbar()
-        plt.title("rigidity_loss1")
-
-        plt.subplot(3, 4, 7)
-        plt.imshow(flow_alpha_loss_video[:, :, i], vmin=0, vmax=1)
-        plt.colorbar()
-        plt.title("flow_alpha_loss")
-
-        plt.subplot(3, 4, 11)
-        plt.imshow(rigidity_loss2_video[:, :, i], vmin=2.8, vmax=50.0)
-        plt.colorbar()
-        plt.title("rigidity_loss2")
-
-        plt.subplot(3, 4, 9)
-        plt.imshow(flow_loss1_video[:, :, i], vmin=0.0, vmax=2.0)
-        plt.colorbar()
-        plt.title("flow_loss1")
-
-        plt.subplot(3, 4, 10)
-        plt.imshow(flow_loss2_video[:, :, i], vmin=0.0, vmax=2.0)
-        plt.colorbar()
-        plt.title("flow_loss2")
-
-        plt.subplot(3, 4, 5)
-        plt.imshow(alpha_reconstruction[:, :, i], vmin=0.0, vmax=1.0)
-        plt.colorbar()
-        plt.title("alpha")
-        plt.subplot(3, 4, 6)
-        plt.imshow(alpha_vs_mask_rcnn_cur, vmin=0.0, vmax=1.0)
-        plt.colorbar()
-        plt.title("alpha_vs_mask_rcnn")
-
-        plt.subplot(3, 4, 1)
-        plt.imshow(video_frames_reconstruction[:, :, :, i], vmin=0.0, vmax=1.0)
-        plt.colorbar()
-        plt.title("video_reconstruction")
-
-        plt.subplot(3, 4, 2)
-        plt.imshow(video_frames[:, :, :, i].numpy(), vmin=0.0, vmax=1.0)
-        plt.colorbar()
-        plt.title("original_video")
-
-        imm = get_img_from_fig(fig)
-        writer_global_info.append_data(imm)
-        plt.close(fig)
-
     print(pnsrs.mean())
     writer_t_edited2_tex.close()
     writer_t_edited1_tex.close()
@@ -692,8 +580,6 @@ def evaluate_model(model_F_atlas, resx, resy, number_of_frames, model_F_mapping1
     writer_edit.close()
     writer_uv_1.close()
     writer_uv_2.close()
-    writer_checkerboard_1.close()
-    writer_checkerboard_2.close()
     writer_uv_1_masked.close()
 
     # save the psnr result as the name of a dummy file

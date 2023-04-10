@@ -40,7 +40,7 @@ def resize_flow(flow, newh, neww):
 def load_input_data(resy, resx, maximum_number_of_frames, data_folder, use_mask_rcnn_bootstrapping,  filter_optical_flow,
                     vid_root, vid_name):
     out_flow_dir = vid_root / f'{vid_name}_flow'
-    maskrcnn_dir = vid_root / f'{vid_name}_maskrcnn'
+    maskrcnn_dir = vid_root / f'{vid_name}_seg'
 
     input_files = sorted(list(data_folder.glob('*.jpg')) + list(data_folder.glob('*.png')))
 
