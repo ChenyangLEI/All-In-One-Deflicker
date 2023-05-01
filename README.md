@@ -9,6 +9,8 @@
 [[Paper](https://chenyanglei.github.io/deflicker/CVPR2023_deflicker_lowres.pdf)]
 [[ArXiv](https://arxiv.org/pdf/2303.08120.pdf)]
 [[Project Website](https://chenyanglei.github.io/deflicker/)]
+[[Dataset-1](https://drive.google.com/file/d/1T1QciF4X7Zxti2VAp5HbSeR-TxuGop7R/view?usp=share_link)]
+[[Dataset-2](https://drive.google.com/file/d/1LaEimHHQlAjom1sB8RgSd8AMa28VCtRi/view?usp=share_link)]
 <!-- [[Appendix]()] -->
 
 
@@ -18,6 +20,7 @@
 </div>
 
 ## News！
+- May 1, 2023: Our collected dataset with real-world flickering videos is released.
 - Apr 10, 2023: Our code can work with segmentations masks for a foreground object.
 - Mar 12, 2023: Inference code and paper are released! Collected dataset will release soon.
 - Feb 28, 2023: Our paper is accepted by CVPR 2023, code will be released in two weeks. 
@@ -125,6 +128,12 @@ list_filename = os.path.join(opts.list_dir, "%s_%s.txt" % (dataset, "test"))
 
 python src/
 ``` -->
+
+## Dataset
+We release two parts of datasets:
+- [Dataset-1](https://drive.google.com/file/d/1T1QciF4X7Zxti2VAp5HbSeR-TxuGop7R/view?usp=share_link) including our collected synthesized videos from text-to-video algorithms, old movies, old cartoons, time-lapse videos, slow-motion videos.
+
+- [Dataset-2](https://drive.google.com/file/d/1LaEimHHQlAjom1sB8RgSd8AMa28VCtRi/view?usp=share_link) including processed videos by the image processing algorithms from [fast_blind_video_consistency](https://github.com/phoenix104104/fast_blind_video_consistency#dataset). Considering the link in the original repo is dead, we provide it here.
 
 ## Discussion and Related work
 **Potential applications**: Our model can be applied to all evaluated types of flickering videos. Besides, while our approach is designed for videos, it is possible to apply *Blind Deflickering* for other tasks (e.g., novel view synthesis) where flickering artifacts exist. 
