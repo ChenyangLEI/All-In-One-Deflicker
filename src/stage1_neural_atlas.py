@@ -21,8 +21,8 @@ from torch.utils.tensorboard import SummaryWriter
 # set gpu
 import os
 import subprocess
-select_gpu = "0" # default use 0
-os.environ["CUDA_VISIBLE_DEVICES"] = select_gpu
+# select_gpu = "0" # default use 0
+# os.environ["CUDA_VISIBLE_DEVICES"] = select_gpu
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
