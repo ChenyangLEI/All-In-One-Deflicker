@@ -21,8 +21,6 @@ from torch.utils.tensorboard import SummaryWriter
 # set gpu
 import os
 import subprocess
-# select_gpu = "0" # default use 0
-# os.environ["CUDA_VISIBLE_DEVICES"] = select_gpu
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -263,7 +261,11 @@ if __name__ == "__main__":
     parser.add_argument('--vid_name', type=str, default="Around_the_world_in_1896_001")
     parser.add_argument('--root', type=str, default="data/test/")
     parser.add_argument('--down', type=int, default=4)
+    parser.add_argument('--gpu', type=int, default=0)
     args = parser.parse_args()
+    
+    select_gpu = "%d" % args.gpu
+    os.environ["CUDA_VISIBLE_DEVICES"] = select_gpu
     
     config_path = "src/config/%s" % args.config
     vid_path = os.path.join(args.root, args.vid_name)
