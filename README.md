@@ -131,9 +131,9 @@ python src/
 
 ## Dataset
 We release two parts of datasets:
-- [Dataset-1](https://drive.google.com/file/d/1LaEimHHQlAjom1sB8RgSd8AMa28VCtRi/view?usp=share_link) including our collected synthesized videos from text-to-video algorithms, old movies, old cartoons, time-lapse videos, slow-motion videos.
+- [Dataset-1](https://huggingface.co/datasets/xrenaa/Blind-Video-Deflickering-Dataset/blob/main/All-In-One-Deflicker-Dataset.zip) including our collected synthesized videos from text-to-video algorithms, old movies, old cartoons, time-lapse videos, slow-motion videos.
 
-- [Dataset-2](https://drive.google.com/file/d/1T1QciF4X7Zxti2VAp5HbSeR-TxuGop7R/view?usp=share_link) including processed videos by the image processing algorithms from [fast_blind_video_consistency](https://github.com/phoenix104104/fast_blind_video_consistency#dataset). Considering the link in the original repo is dead, we provide it here.
+- [Dataset-2](https://huggingface.co/datasets/xrenaa/Blind-Video-Deflickering-Dataset/blob/main/Lai_Proccessed.zip) including processed videos by the image processing algorithms from [fast_blind_video_consistency](https://github.com/phoenix104104/fast_blind_video_consistency#dataset). Considering the link in the original repo is dead, we provide it here.
 
 ## Discussion and Related work
 **Potential applications**: Our model can be applied to all evaluated types of flickering videos. Besides, while our approach is designed for videos, it is possible to apply *Blind Deflickering* for other tasks (e.g., novel view synthesis) where flickering artifacts exist. 
