@@ -9,8 +9,8 @@
 [[Paper](https://chenyanglei.github.io/deflicker/CVPR2023_deflicker_lowres.pdf)]
 [[ArXiv](https://arxiv.org/pdf/2303.08120.pdf)]
 [[Project Website](https://chenyanglei.github.io/deflicker/)]
-[[Dataset-1](https://drive.google.com/file/d/1LaEimHHQlAjom1sB8RgSd8AMa28VCtRi/view?usp=share_link)]
-[[Dataset-2](https://drive.google.com/file/d/1T1QciF4X7Zxti2VAp5HbSeR-TxuGop7R/view?usp=share_link)]
+[[Dataset-1](https://huggingface.co/datasets/xrenaa/Blind-Video-Deflickering-Dataset/blob/main/All-In-One-Deflicker-Dataset.zip)]
+[[Dataset-2](https://huggingface.co/datasets/xrenaa/Blind-Video-Deflickering-Dataset/blob/main/Lai_Proccessed.zip)]
 <!-- [[Appendix]()] -->
 
 <div align="center">
